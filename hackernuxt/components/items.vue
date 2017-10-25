@@ -1,0 +1,63 @@
+<template>
+  <div class="code">
+    <ul class="list pa2">
+      <li class="item f6" v-for="item in items" :key="item.id">
+        <div class="score f4">{{item.score}}</div>
+        <div class="title">
+          {{item.title}}
+          <a class="f7" :href="item.url" v-if="item.url">{{item.url | hostname}}</a>  
+        </div>
+        <div class="details">
+          <nuxt-link :to="'/user/' + item.by"> by {{item.by}} </nuxt-link>
+          <p class="ma0 i f7">{{item.time | timeSince}}</p>
+        </div>
+        <template v-if="item.descendants">
+          <div class="comments">{{item.descendants}} comments</div>
+        </template>
+      </li>
+    </ul>
+  </div>
+</template>
+
+<script>
+import {mapState} from "vuex"
+
+export default {
+  computed: mapState([
+    "items"
+  ])
+}
+</script>
+
+<style scoped>
+.item {
+  display: grid;
+  grid: repeat(4, 1.5em) / repeat(10, 1fr);
+  grid-row-gap: 1em;
+}
+
+.score{
+  grid-row: 1 / -1;
+  grid-column: span 1;
+  align-self: center;
+  justify-self: center; 
+}
+
+.title {
+  grid-row: 1 / 3;
+  grid-column: 2 / -2;
+  align-self: end;
+}
+
+.details {
+  grid-row: 3 / -1;
+  grid-column: 6 / -2;
+  justify-self: end;
+}
+
+.comments {
+  grid-row: 3 / -1;
+  grid-column: 2 / 6;
+}
+
+</style>
